@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react'
-import { Outlet, Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, redirect } from 'react-router-dom'
 import { submitForm } from './util/crudOperations'
 
 const Register = () => {
@@ -19,6 +19,7 @@ const Register = () => {
       password,
     }
     submitForm(userRegistration)
+    return redirect('/create-profile')
   }
 
   return (

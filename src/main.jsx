@@ -6,6 +6,7 @@ import Register from './Register.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Error from './Error.jsx'
 import Login from './Login'
+import CreateProfile from './CreateProfile.jsx'
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <Login />
+  },
+  {
+    path: '/create-profile',
+    element: <CreateProfile />
   }
 ])
 
