@@ -1,11 +1,12 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { Outlet, Link } from 'react-router-dom'
 import { submitForm } from './util/crudOperations'
+
 const Register = () => {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [password2, setPassword2] = useState('')
-  // const [errors, setErrors] = []
 
   function handleSubmit(e) {
     e.preventDefault()
@@ -76,8 +77,12 @@ const Register = () => {
           Register
         </button>
       </form>
+      <Link to={'/login'} className='mt-4 text-xl font-normal underline'>
+        Already registered?
+      </Link>
     </div>
   )
 }
 
 export default Register
+
