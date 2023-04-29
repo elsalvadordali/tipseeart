@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Outlet, Link } from 'react-router-dom'
 
 const Register = () => {
     const [username, setUsername] = useState('')
@@ -9,6 +10,8 @@ const Register = () => {
 
     function handleSubmit(e) {
         e.preventDefault()
+
+        /*
         if (password !== password2) return;
         if (password.length < 5) return;
         if (username.length < 3) return;
@@ -16,7 +19,7 @@ const Register = () => {
         form.append('username', username)
         form.append('email', email)
         form.append('password', password)
-
+        */
     }
 
     return (
@@ -62,6 +65,8 @@ const Register = () => {
                     onClick={handleSubmit}
                 >Register</button>
             </form>
+            <Link to={'/login'} className="mt-4 text-xl font-normal underline">Already registered?</Link>
+
         </div>
     )
 }

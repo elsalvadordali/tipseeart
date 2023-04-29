@@ -1,9 +1,10 @@
-
+import { Link } from "react-router-dom"
 
 const Login = () => {
     return (
         <div className="flex flex-col items-center">
-            <h1 className="font-extralight text-6xl mb-12">Register</h1>
+            <h1 className="font-extralight text-6xl mb-12">Login</h1>
+
             <form className="flex flex-col w-5/6 lg:w-1/3">
                 <label htmlFor="email" className="mt-4 text-xl font-medium">Email</label>
                 <input
@@ -25,6 +26,7 @@ const Login = () => {
 
                 >Login</button>
             </form>
+            <Link to={'/register'} className="mt-4 text-xl font-normal underline">Need an account?</Link>
         </div>
     )
 }
