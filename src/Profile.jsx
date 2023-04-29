@@ -2,11 +2,11 @@ import { LinkIcon, TwitterIcon, InstagramIcon, CashAppLogo, PaypalLogo, VenmoLog
 const Profile = () => {
   return (
     <div className='bg-slate-100'>
-      <header className='bg-[#222222] opacity-90 min-h-[360px] flex justify-center mb-[220px]'>
+      <header className='bg-[#222222] opacity-90 min-h-[360px] flex justify-center mb-56'>
         <div className=' h-72 w-72 rounded-full bg-[#D9D9D9] relative top-[216px]' />
       </header>
       <main className='relative space-y-20 h-screen px-10'>
-        <div className='space-y-5'>
+        <div className='space-y-8 max-w-xl lg:max-w-4xl mx-auto'>
           <h2 className='text-4xl font-extralight text-center'>John Smith</h2>
           <ul className='flex justify-center gap-4'>
             <li>
@@ -28,8 +28,7 @@ const Profile = () => {
               </a>
             </li>
           </ul>
-
-          <p className='max-w-xl lg:max-w-4xl text-center mx-auto'>
+          <p className='text-center'>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
             dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex
             ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat
@@ -56,11 +55,11 @@ const Profile = () => {
           </div>
         </div>
 
-        <div className='grid grid-cols-2 lg:grid-cols-4 mx-auto gap-10 lg:max-w-4xl justify-items-center max-w-xl'>
-          <div className='w-48 h-48 bg-[#D9D9D9]'></div>
-          <div className='w-48 h-48 bg-[#D9D9D9]'></div>
-          <div className='w-48 h-48 bg-[#D9D9D9]'></div>
-          <div className='w-48 h-48 bg-[#D9D9D9]'></div>
+        <div className='grid grid-cols-3 md:grid-cols-4 gap-10 justify-items-center'>
+          <div className='w-full h-48 bg-[#D9D9D9]'></div>
+          <div className='w-full h-48 bg-[#D9D9D9]'></div>
+          <div className='w-full h-48 bg-[#D9D9D9]'></div>
+          <div className='w-full h-48 bg-[#D9D9D9]'></div>
         </div>
       </main>
     </div>
