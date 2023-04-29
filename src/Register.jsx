@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-
+import { Outlet, Link } from 'react-router-dom'
 
 const Register = () => {
     const [username, setUsername] = useState('')
@@ -65,6 +65,8 @@ const Register = () => {
                     onClick={handleSubmit}
                 >Register</button>
             </form>
+            <Link to={'/login'} className="mt-4 text-xl font-normal underline">Already registered?</Link>
+
         </div>
     )
 }

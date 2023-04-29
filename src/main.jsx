@@ -5,17 +5,22 @@ import './index.css'
 import Register from './Register.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Error from './Error.jsx'
+import Login from './Login'
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
-    errorElement: <Error />,
+    errorElement: <Error />
   },
   {
     path: '/register',
-    element: <Register />,
+    element: <Register />
   },
+  {
+    path: '/login',
+    element: <Login />
+  }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
