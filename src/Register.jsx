@@ -1,6 +1,24 @@
-
+import { useState, useEffect } from 'react'
 
 const Register = () => {
+    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [password2, setPassword2] = useState('')
+    const [errors, setErrors] = []
+
+    function handleSubmit(e) {
+        e.preventDefault()
+        if (password !== password2) return;
+        if (password.length < 5) return;
+        if (username.length < 3) return;
+        const form = new FormData();
+        form.append('username', username)
+        form.append('email', email)
+        form.append('password', password)
+
+    }
+
     return (
         <div className="flex flex-col items-center">
             <h1 className="font-extralight text-6xl mb-12">Register</h1>
@@ -10,12 +28,16 @@ const Register = () => {
                     type="text"
                     name="username" id="username"
                     className="border-2 border-gray-200 py-2 px-4 outline-none focus:border-gray-700"
+                    value={username}
+                    onChange={e => setUsername(e.target.value)}
                 />
                 <label htmlFor="email" className="mt-4 text-xl font-medium">Email</label>
                 <input
                     type="text"
                     name="email" id="email"
                     className="border-2 border-gray-200 py-2 px-4 outline-none focus:border-gray-700"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
                 />
                 <label htmlFor="password" className="mt-4 text-xl font-medium">Password</label>
                 <input
@@ -23,19 +45,21 @@ const Register = () => {
                     name="password"
                     id="password"
                     className="border-2 border-gray-200 py-2 px-4 outline-none focus:border-gray-700"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
                 />
                 <label htmlFor="password2" className="mt-4 text-xl font-medium">Confirm Password</label>
                 <input
                     type="password"
-                    name="password2"
-                    id="password2"
+                    name="password2" id="password2"
                     className="border-2 border-gray-200 py-2 px-4 outline-none focus:border-gray-700"
-
+                    value={password2}
+                    onChange={e => setPassword2(e.target.value)}
                 />
                 <button
                     type="submit"
                     className="border-2 border-gray-200 py-2 px-4 outline-none active:border-grey-600 mt-6 tracking-wider uppercase text-xl hover:border-gray-700"
-
+                    onClick={handleSubmit}
                 >Register</button>
             </form>
         </div>
