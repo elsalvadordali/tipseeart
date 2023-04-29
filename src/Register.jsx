@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 
+
 const Register = () => {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
@@ -9,6 +10,8 @@ const Register = () => {
 
     function handleSubmit(e) {
         e.preventDefault()
+
+        /*
         if (password !== password2) return;
         if (password.length < 5) return;
         if (username.length < 3) return;
@@ -16,7 +19,7 @@ const Register = () => {
         form.append('username', username)
         form.append('email', email)
         form.append('password', password)
-
+        */
     }
 
     return (
