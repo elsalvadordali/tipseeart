@@ -3,5 +3,9 @@
 @tailwind utilities;
 
 #root {
-    padding: 0
+  padding: 0;
+}
+
+#profile-pic:hover {
+  opacity: 0.5;
 }

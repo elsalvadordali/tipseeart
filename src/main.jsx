@@ -1,36 +1,65 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
+import Root from './routes/Root'
 import './index.css'
-import Register from './Register.jsx'
+import Register from './routes/Register.jsx'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Error from './Error.jsx'
-import Login from './Login'
-import CreateProfile from './CreateProfile.jsx'
+import Error from './routes/Error.jsx'
+import Login from './routes/Login'
+import CreateProfile from './routes/CreateProfile.jsx'
+import PrivateRoutes from './routes/PrivateRoutes.jsx'
+import Profile from './routes/Profile'
+import App from './routes/App'
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <App />,
-    errorElement: <Error />
+    element: <Root />,
+    errorElement: <Error />,
+    children: [
+      {
+        path: '/',
+        element: <App />,
+        errorElement: <Error />,
+      },
+      {
+        path: '/register',
+        element: <Register />,
+        errorElement: <Error />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
+        errorElement: <Error />,
+      },
+      {
+        path: '/create-profile',
+        element: <PrivateRoutes />,
+        children: [
+          {
+            path: '/create-profile',
+            element: <CreateProfile />,
+          },
+        ],
+        errorElement: <Error />,
+      },
+      {
+        path: '/profile',
+        element: <PrivateRoutes />,
+        errorElement: <Error />,
+        children: [
+          {
+            path: '/profile',
+            element: <Profile />,
+          },
+        ],
+      },
+    ],
   },
-  {
-    path: '/register',
-    element: <Register />
-  },
-  {
-    path: '/login',
-    element: <Login />
-  },
-  {
-    path: '/create-profile',
-    element: <CreateProfile />
-  }
 ])
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <RouterProvider router={router} />
-
-  </React.StrictMode>,
+  </React.StrictMode>
 )
