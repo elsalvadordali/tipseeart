@@ -12,11 +12,19 @@ const Dropdown = ({ list, toggleInput, displayName }) => {
             {openList ?
                 list.map((item, index) => {
                     if (!item.set) {
-                        if (item.name === 'close') return <button className='p-4 bg-gray-200 uppercase tracking-wider border-b-2 last:border-0 text-left' key={index} onClick={() => setOpenList(!openList)}>{item.name} <span className='text-xl ml-4'>🞁</span></button>
-                        return <button className='p-4 border-b-2 last:border-0 text-left' key={index} onClick={() => toggleInput(item.name)}>{item.name}</button>
+                        if (item.name === 'close') {
+                            return <button
+                                className='p-4 bg-gray-200 uppercase tracking-wider border-2 text-left hover:bg-indigo-400 hover:border-indigo-400 transition duration-300 ease-in-out'
+                                key={index}
+                                onClick={() => setOpenList(!openList)}>
+                                {item.name}
+                                <span className='text-xl ml-4'>🞁</span>
+                            </button>
+                        }
+                        return <button className='transition duration-300 ease-in-out hover:border-indigo-500 p-4 border-b-2  text-left' key={index} onClick={() => toggleInput(item.name)}>{item.name}</button>
                     }
                 })
-                : <button className="p-4 bg-[#222222] font-extralight text-xl text-white uppercase tracking-wider" onClick={() => setOpenList(!openList)}>{displayName} <span className='text-xl ml-4'> 🞃</span></button>
+                : <button className="p-4 bg-[#222222] font-extralight text-xl text-white uppercase tracking-wider hover:bg-indigo-700 transition duration-300 ease-in-out" onClick={() => setOpenList(!openList)}>{displayName} <span className='text-xl ml-4'> 🞃</span></button>
             }
         </div>
     )
