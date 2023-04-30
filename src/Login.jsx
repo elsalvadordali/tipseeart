@@ -12,15 +12,8 @@ const Login = () => {
     if (password.length === '') return
     if (username.length === '') return
     const formData = new FormData()
-    // formData.append('grant_type', '')
     formData.append('username', username)
     formData.append('password', password)
-    // formData.append('scope', '')
-    // formData.append('client_id', '')
-    // formData.append('client_secret', '')
-    for (const pair of formData.entries()) {
-      console.log(`${pair[0]}, ${pair[1]}`)
-    }
     loginRequest(formData)
   }
 
