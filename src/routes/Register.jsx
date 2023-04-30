@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+<<<<<<< HEAD:src/routes/Register.jsx
+import { submitForm } from '../util/crudOperations'
+=======
 import { submitForm } from './util/crudOperations'
+>>>>>>> main:src/Register.jsx
 
 const Register = () => {
   const [username, setUsername] = useState('')
@@ -14,7 +18,12 @@ const Register = () => {
   function handleSubmit(e) {
     e.preventDefault()
     if (username.length < 3) return setError({ username: 'Username must be at least 3 characters' })
+<<<<<<< HEAD:src/routes/Register.jsx
+    if (email.includes('@') === false || email.includes('.') === false)
+      return setError({ email: 'Email must be valid' })
+=======
     if (email.includes('@') === false || email.includes('.') === false) return setError({ email: 'Email must be valid' })
+>>>>>>> main:src/Register.jsx
     if (password.length < 8) return setError({ password: 'Password must be at least 8 characters' })
     if (password !== password2) return setError({ password2: 'Passwords do not match' })
 
@@ -97,8 +106,6 @@ const Register = () => {
       </Link>
     </div>
   )
-
 }
 
 export default Register
-

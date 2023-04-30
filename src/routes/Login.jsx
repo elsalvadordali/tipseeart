@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { useState } from 'react'
 
-import { loginRequest } from './util/crudOperations'
+import { loginRequest } from '../util/crudOperations'
 
 const Login = () => {
   const [username, setUsername] = useState('')

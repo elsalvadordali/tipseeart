@@ -3,9 +3,18 @@
 @tailwind utilities;
 
 #root {
+<<<<<<< HEAD
+  padding: 0;
+}
+
+#profile-pic:hover {
+  opacity: 0.5;
+}
+=======
     padding: 0
 }
 
 #profile-pic:hover {
     opacity: .5;
 }
+>>>>>>> main
