@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-=======
-
-
->>>>>>> main
 export async function submitForm(userData) {
   try {
     const response = await fetch(`https://tipseeart.fly.dev/user/create`, {
@@ -29,11 +24,7 @@ export async function submitForm(userData) {
 export async function confirmToken(token) {
   try {
     const response = await fetch('https://tipseeart.fly.dev/me', {
-<<<<<<< HEAD
       headers: { Authorization: 'Bearer ' + token },
-=======
-      headers: { Authorization: 'Bearer ' + token }
->>>>>>> main
     })
     if (!response.ok) {
       const message = response
@@ -63,6 +54,8 @@ export async function loginRequest(userData) {
     }
 
     const data = await response.json()
+    const token = data.access_token
+    sessionStorage.setItem('token', token)
     console.log(data)
   } catch (error) {
     console.log(`Error: ${error}`)
@@ -90,8 +83,4 @@ export async function createProfile(artist, token) {
   } catch (error) {
     console.log(`Error: ${error}`)
   }
-<<<<<<< HEAD
-=======
-
->>>>>>> main
 }
