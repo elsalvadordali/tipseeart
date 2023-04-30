@@ -7,6 +7,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Error from './Error.jsx'
 import Login from './Login'
 import CreateProfile from './CreateProfile.jsx'
+import Profile from './Profile.jsx'
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
   {
     path: '/create-profile',
     element: <CreateProfile />
+  },
+  {
+    path: '/profile',
+    element: <Profile />
   }
 ])
 

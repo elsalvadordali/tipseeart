@@ -27,11 +27,6 @@ const Register = () => {
     navigate('/create-profile')
   }
 
-
-
-  useEffect(() => {
-    console.log(error)
-  }, [error])
   return (
     <div className='flex flex-col items-center'>
       <h1 className='font-extralight text-6xl mb-12'>Register</h1>
@@ -97,19 +92,11 @@ const Register = () => {
         </button>
 
       </form>
-      <button onClick={redirectMe}>
-        Redirect
-      </button>
       <Link to={'/login'} className='mt-4 text-xl font-normal underline'>
         Already registered?
       </Link>
     </div>
   )
-  function redirectMe(e) {
-    e.preventDefault()
-    console.log('clicked')
-
-  }
 
 }
 

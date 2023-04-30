@@ -5,3 +5,7 @@
 #root {
     padding: 0
 }
+
+#profile-pic:hover {
+    opacity: .5;
+}

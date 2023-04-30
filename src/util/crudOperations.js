@@ -1,4 +1,4 @@
-// https://tipseeart.fly.dev
+
 
 export async function submitForm(userData) {
   try {
@@ -60,4 +60,28 @@ export async function loginRequest(userData) {
   } catch (error) {
     console.log(`Error: ${error}`)
   }
+}
+
+export async function createProfile(artist, token) {
+  console.log(artist, token)
+  const formData = new FormData()
+  formData.append('artist', artist)
+  try {
+    const response = await fetch('https://tipseeart.fly.dev/artists/create', {
+      method: 'post',
+      headers: { Authorization: 'Bearer ' + token },
+      body: JSON.stringify(formData),
+    })
+    if (!response.ok) {
+      const message = `Error: ${response.status}`
+      throw new Error(message)
+    }
+    const data = await response.json()
+    console.log(data)
+    //const token = data.access_token
+    //sessionStorage.setItem('token', token)
+  } catch (error) {
+    console.log(`Error: ${error}`)
+  }
+
 }

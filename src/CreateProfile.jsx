@@ -1,31 +1,31 @@
 import { useState, useEffect, useRef } from "react"
 import Dropdown from "./components/Dropdown"
 import Socials from "./components/Socials"
-import { confirmToken } from './util/crudOperations'
+import { createProfile } from './util/crudOperations'
 
 const SOCIAL_MEDIA = [
-    { name: 'Twitter', url: '', set: false },
-    { name: 'Facebook', url: '', set: false },
-    { name: 'Youtube', url: '', set: false },
-    { name: 'Instagram', url: '', set: false },
-    { name: 'LinkedIn', url: '', set: false },
-    { name: 'Bandcamp', url: '', set: false },
-    { name: 'Soundcloud', url: '', set: false },
-    { name: 'Spotify', url: '', set: false },
-    { name: 'Portfolio', url: '', set: false },
-    { name: 'TikTok', url: '', set: false },
-    { name: 'Etsy', url: '', set: false },
-    { name: 'Twitch', url: '', set: false },
-    { name: 'Reddit', url: '', set: false },
-    { name: 'Pinterest', url: '', set: false },
-    { name: 'Other', url: '', set: false },
+    { name: 'twitter', url: '', set: false },
+    { name: 'facebook', url: '', set: false },
+    { name: 'youtube', url: '', set: false },
+    { name: 'instagram', url: '', set: false },
+    { name: 'linkedIn', url: '', set: false },
+    { name: 'bandcamp', url: '', set: false },
+    { name: 'soundcloud', url: '', set: false },
+    { name: 'spotify', url: '', set: false },
+    { name: 'portfolio', url: '', set: false },
+    { name: 'tiktok', url: '', set: false },
+    { name: 'etsy', url: '', set: false },
+    { name: 'twitch', url: '', set: false },
+    { name: 'reddit', url: '', set: false },
+    { name: 'pinterest', url: '', set: false },
+    { name: 'other', url: '', set: false },
     { name: 'close' }
 ]
 const PAYMENT_LINKS = [
-    { name: 'Venmo', url: '', set: false },
-    { name: 'Paypal', url: '', set: false },
-    { name: 'CashApp', url: '', set: false },
-    { name: 'Other', url: '', set: false },
+    { name: 'venmo', url: '', set: false },
+    { name: 'paypal', url: '', set: false },
+    { name: 'cashapp', url: '', set: false },
+    { name: 'other', url: '', set: false },
     { name: 'close' }
 
 ]
@@ -49,7 +49,6 @@ const CreateProfile = () => {
             setImage(null)
         }
     }, [profilePicture])
-    console.log(profilePicture)
 
     return (
         <div className="flex items-center justify-center w-full">
@@ -66,7 +65,7 @@ const CreateProfile = () => {
                 />
                 {image && <div className="relative"><img src={image} alt='uploading' /><button className="absolute top-0 right-0 px-4 text-xl text-red-600" onClick={() => setProfilePicture(null)}>×</button></div>}
 
-                <h2 className="text-2xl font-extralight mb-2">2. Bio</h2>
+                <h2 className="text-2xl font-extralight mb-2">2. Bio <span className="text-red-600">(required)</span></h2>
                 <textarea
                     className="border-2 w-80 p-2 h-36 focus:border-gray-600 outline-none hover:border-indigo-700 transition duration-300 ease-in-out"
                     placeholder="I grew up in... I draw my inspiration from..."
@@ -142,30 +141,15 @@ const CreateProfile = () => {
     }
     async function submitForm(e) {
         e.preventDefault()
-        console.log('hello?')
         if (bio.length > 255) return
-        try {
-            const response = await fetch('https://tipseeart.fly.dev/artists/create', {
-                method: 'post',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ description: bio }),
-            })
-
-            if (!response.ok) {
-                const message = `Error: ${response.status}`
-                throw new Error(message)
-            }
-
-            const data = await response.json()
-            console.log(data)
-            //const token = data.access_token
-            //sessionStorage.setItem('token', token)
-        } catch (error) {
-            console.log(`Error: ${error}`)
-        }
-
+        const artist = { description: bio, payment_urls: [], social_links: [] }
+        artistsSM.forEach((social) => {
+            if (social.set) artist.social_links.push({ social_name: social.name, username: social.url })
+        })
+        artistsPayment.forEach((payment) => {
+            if (payment.set) artist.payment_urls.push({ provider_name: payment.name, username: payment.url })
+        })
+        createProfile(artist, token)
     }
 }
 
