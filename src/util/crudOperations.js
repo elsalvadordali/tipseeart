@@ -1,8 +1,8 @@
-let url = 'https://tipseeart.fly.dev/user/create'
+// https://tipseeart.fly.dev
 
 export async function submitForm(userData) {
   try {
-    const response = await fetch(url, {
+    const response = await fetch(`https://tipseeart.fly.dev/user/create`, {
       method: 'post',
       headers: {
         'Content-Type': 'application/json',
@@ -25,11 +25,9 @@ export async function submitForm(userData) {
 
 export async function loginRequest(userData) {
   try {
-    const response = await fetch(url, {
+    const response = await fetch('https://tipseeart.fly.dev/token', {
       method: 'post',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
+      headers: {}, // When using specified 'Content-Type': 'application/x-www-form-urlencoded' an error 422 occurs.
       body: userData,
     })
 
@@ -39,9 +37,7 @@ export async function loginRequest(userData) {
     }
 
     const data = await response.json()
-    const token = data.access_token
-    console.log(data, token)
-    // sessionStorage.setItem('token', token)
+    console.log(data)
   } catch (error) {
     console.log(`Error: ${error}`)
   }
