@@ -22,3 +22,22 @@ export async function submitForm(userData) {
     console.log(`Error: ${error}`)
   }
 }
+
+export async function confirmToken(token) {
+  try {
+    const response = await fetch('https://tipseeart.fly.dev/me', {
+      headers: { Authorization: 'Bearer ' + token }
+    })
+    if (!response.ok) {
+      const message = response
+      throw new Error(message)
+      return false
+    }
+    const data = await response.json()
+    if (data) return true
+    return false
+  } catch (error) {
+    console.log(`Error: ${error}`)
+    return false
+  }
+}

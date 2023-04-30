@@ -1,6 +1,7 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import Dropdown from "./components/Dropdown"
 import Socials from "./components/Socials"
+import { confirmToken } from './util/crudOperations'
 
 const SOCIAL_MEDIA = [
     { name: 'Twitter', url: '', set: false },
@@ -30,26 +31,44 @@ const PAYMENT_LINKS = [
 ]
 
 const CreateProfile = () => {
+    const token = sessionStorage.getItem('token')
     const [artistsSM, setArtistsSM] = useState(SOCIAL_MEDIA)
     const [artistsPayment, setArtistsPayment] = useState(PAYMENT_LINKS)
     const [bio, setBio] = useState('')
+    const [profilePicture, setProfilePicture] = useState(null)
+    const [image, setImage] = useState(null)
+
+    useEffect(() => {
+        //let res = confirmToken(token)
+    }, [])
+
+    useEffect(() => {
+        if (profilePicture) {
+            setImage(URL.createObjectURL(profilePicture))
+        } else {
+            setImage(null)
+        }
+    }, [profilePicture])
+    console.log(profilePicture)
 
     return (
         <div className="flex items-center justify-center w-full">
             <form className="flex flex-col items-start m-6 sm:w-96" onSubmit={submitForm}>
                 <h1 className="font-extralight text-6xl mb-12">Create Profile</h1>
                 <h2 className="text-2xl font-extralight mb-2">1. Profile Picture</h2>
-
-                <label htmlFor='profilePicture' className="w-80 border-2 p-24 bg-gray-200 border-gray-600 mb-12">click or drag here</label>
+                <label htmlFor='profilePicture' className="w-80 border-2 p-12 text-center bg-gray-200 border-gray-600 mb-12">click or drag here</label>
                 <input
                     id='profilePicture'
                     type='file'
                     accept='image/*'
                     className="hidden"
+                    onChange={e => setProfilePicture(e.target.files[0])}
                 />
+                {image && <div className="relative"><img src={image} alt='uploading' /><button className="absolute top-0 right-0 px-4 text-xl text-red-600" onClick={() => setProfilePicture(null)}>×</button></div>}
+
                 <h2 className="text-2xl font-extralight mb-2">2. Bio</h2>
                 <textarea
-                    className="border-2 w-80 p-2 h-36 focus:border-gray-600 outline-none"
+                    className="border-2 w-80 p-2 h-36 focus:border-gray-600 outline-none hover:border-indigo-700 transition duration-300 ease-in-out"
                     placeholder="I grew up in... I draw my inspiration from..."
                     onChange={e => setBio(e.target.value)}
                     value={bio}
@@ -75,7 +94,7 @@ const CreateProfile = () => {
                         })}
                     </div>
                 </div>
-                <button className="border-2 py-4 px-6 uppercase tracking-wider font-normal hover:italic hover:border-gray-600">upload gallery</button>
+                <button className="py-4 px-6 bg-[#222222] text-white uppercase tracking-wider font-normal hover:bg-indigo-700 transition duration-300 ease-in-out">upload gallery</button>
             </form>
         </div>
     )

@@ -18,39 +18,95 @@ function App() {
           "username": "Evelyn Boyer",
           "email": "user@example.com"
         },
-        "profile_pic_url": "string"
+        "profile_pic_url": "artwork-1.JPG"
       },
       {
         "description": "string",
         "user": {
-          "username": "Austin C.",
+          "username": "Austin Coue.",
           "email": "user@example.com"
         },
-        "profile_pic_url": "string"
+        "profile_pic_url": "artwork-2.jpg"
       },
       {
         "description": "string",
+        "user": {
+          "username": "Wesley Woroeumstrom",
+          "email": "user@example.com"
+        },
+        "profile_pic_url": "artwork-3.JPG"
+      },
+      {
+        "description": "string",
+        "user": {
+          "username": "Collin Powouell",
+          "email": "user@example.com"
+        },
+        "profile_pic_url": "artwork-4.JPG"
+      },
+      {
+        "description": "string",
+        "user": {
+          "username": "Evelyn Boyouer",
+          "email": "user@example.com"
+        },
+        "profile_pic_url": "artwork-1.JPG"
+      },
+      {
+        "description": "string",
+        "user": {
+          "username": "Ausoeutin C.",
+          "email": "user@example.com"
+        },
+        "profile_pic_url": "artwork-2.jpg"
+      },
+      {
+        "description": "string",
+        "user": {
+          "username": "Wesluoey Wormstrom",
+          "email": "user@example.com"
+        },
+        "profile_pic_url": "artwork-3.JPG"
+      },
+      {
+        "description": "string",
+        "user": {
+          "username": "Coluolin Powell",
+          "email": "user@example.com"
+        },
+        "profile_pic_url": "artwork-4.JPG"
+      },
+      {
+        "description": "string",
+        "user": {
+          "username": "Evelyn Boaoyer",
+          "email": "user@example.com"
+        },
+        "profile_pic_url": "artwork-1.JPG"
+      },
+      {
+        "description": "string",
+        "user": {
+          "username": "Austieiin C.",
+          "email": "user@example.com"
+        },
+        "profile_pic_url": "artwork-2.jpg"
+      },
+      {
+        "description": "straoeuing",
         "user": {
           "username": "Wesley Wormstrom",
           "email": "user@example.com"
         },
-        "profile_pic_url": "string"
+        "profile_pic_url": "artwork-3.JPG"
       },
       {
-        "description": "string",
+        "description": "straoeuing",
         "user": {
           "username": "Collin Powell",
           "email": "user@example.com"
         },
-        "profile_pic_url": "string"
-      },
-      {
-        "description": "string",
-        "user": {
-          "username": "string",
-          "email": "user@example.com"
-        },
-        "profile_pic_url": "string"
+        "profile_pic_url": "artwork-4.JPG"
       }
     ]
     /*
@@ -58,8 +114,11 @@ function App() {
         .then(res => res.json())
         .then(data => allArtists.current = data )
         */
+    let random = Math.floor(Math.random() * allArtists.current.length)
+    setFeatured(random)
     setArtists(allArtists.current)
   }, [])
+
 
   useEffect(() => {
     setArtists(filterArtists())
@@ -71,6 +130,7 @@ function App() {
       <header className='bg-[#222222] opacity-90 p-12 flex flex-row justify-around items-center'>
         <img src='/tipseeart.svg' className="w-36" alt="tip see art" />
         <Link to='/login' className='text-white underline text-xl'>Login</Link>
+
       </header>
       <div className="p-6 py-12 md:p-12">
 
@@ -90,10 +150,16 @@ function App() {
             backgroundPosition: "right center",
           }}
         />
-        <div className='flex flex-row flex-wrap w-full justify-evenly items-start'>
-          {artists.length > 0 ? artists.map(artist => (
-            <div key={artist.user.username}><ArtistBlock artist={artist} isFeatured={false} /> </div>
+        <p>{search && artists.length + ' found'}</p>
+        <div className='flex flex-row flex-wrap w-full justify-evenly items-start min-h-screen'>
+          {artists.length > 0 ? artists.map((artist, i) => (
+            <ArtistBlock artist={artist} isFeatured={i == featured} />
           )) : <p>No artists found! </p>}
+        </div>
+        <div className='flex flex-col items-center border-t-2 border-b-2 p-12 mb-24'>
+          <h3 className='mb-4 text-4xl font-extralight'>Are you an artist?</h3>
+          <p><Link to='/register' className='bg-gray-600 text-white p-4 py-2 underline text-xl text-normal uppercase tracking-wider hover:bg-fuchsia-500 transition duration-300'>Register here</Link> to be featured on our page. It's free!
+          </p>
         </div>
       </div>
     </>
