@@ -21,7 +21,6 @@ const Register = () => {
     submitForm(userRegistration)
     return redirect('/create-profile')
   }
-
   return (
     <div className='flex flex-col items-center'>
       <h1 className='font-extralight text-6xl mb-12'>Register</h1>
@@ -83,6 +82,7 @@ const Register = () => {
       </Link>
     </div>
   )
+
 }
 
 export default Register
