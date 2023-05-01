@@ -1,7 +1,8 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { submitForm } from '../util/crudOperations'
 import SuccessToast from '../components/SuccessToast'
+import { useIsAuthenticated } from 'react-auth-kit'
 
 const SignUp = () => {
   const [username, setUsername] = useState('')
@@ -10,8 +11,15 @@ const SignUp = () => {
   const [password2, setPassword2] = useState('')
   const [error, setError] = useState({})
   const [formCompleted, setFormCompleted] = useState(false)
-
   const navigate = useNavigate()
+  const isAuthenticated = useIsAuthenticated()
+
+  // Redirects authenticated user from login page.
+  useEffect(() => {
+    if (isAuthenticated()) {
+      return navigate('/')
+    }
+  }, [isAuthenticated, navigate])
   function clearForm() {
     setUsername('')
     setEmail('')
