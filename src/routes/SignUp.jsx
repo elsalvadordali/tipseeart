@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { submitForm } from '../util/crudOperations'
 import SuccessToast from '../components/SuccessToast'
 
-const Register = () => {
+const SignUp = () => {
   const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -111,4 +111,4 @@ const Register = () => {
   )
 }
 
-export default Register
+export default SignUp

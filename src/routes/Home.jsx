@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import ArtistBlock from '../components/ArtistBlock'
 
-function App() {
+function Home() {
   let allArtists = useRef()
   const [artists, setArtists] = useState([])
   const [search, setSearch] = useState('')
@@ -172,4 +172,4 @@ function App() {
   }
 }
 
-export default App
+export default Home
