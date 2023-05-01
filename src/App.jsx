@@ -23,7 +23,7 @@ const App = () => (
           <Route path='/login' element={<Login />} errorElement={<Error />} />
           <Route path='/signup' element={<SignUp />} errorElement={<Error />} />
           <Route
-            path={'/createProfile'}
+            path={'/create-a-profile'}
             element={
               <RequireAuth loginPath={'/login'}>
                 <CreateProfile />

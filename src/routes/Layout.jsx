@@ -23,14 +23,16 @@ const Layout = () => {
                   Sign Up
                 </NavLink>
               </li>
-
-              {
-                <li>
-                  <NavLink to={'/profile'} className='text-white underline text-xl'>
-                    Profile
-                  </NavLink>
-                </li>
-              }
+              <li>
+                <NavLink to={'/profile'} className='text-white underline text-xl'>
+                  Profile
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to={'/create-a-profile'} className='text-white underline text-xl'>
+                  Create a Profile
+                </NavLink>
+              </li>
             </ul>
           </nav>
         </div>
