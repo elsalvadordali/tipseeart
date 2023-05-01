@@ -1,12 +1,20 @@
 import axios from 'axios'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useSignIn } from 'react-auth-kit'
+import { useSignIn, useIsAuthenticated } from 'react-auth-kit'
 
 const Login = () => {
   const signIn = useSignIn()
   const navigate = useNavigate()
+  const isAuthenticated = useIsAuthenticated()
   const [formData, setFormData] = useState({ username: '', password: '' })
+
+  // Redirects authenticated user from login page.
+  useEffect(() => {
+    if (isAuthenticated()) {
+      return navigate('/')
+    }
+  }, [isAuthenticated, navigate])
 
   async function onSubmit(e) {
     e.preventDefault()
@@ -21,9 +29,11 @@ const Login = () => {
           token: response.data.access_token,
           tokenType: 'bearer',
           expiresIn: 30000, // Needs added to api end points. Hardcoded in the meantime due to being a required value.
-          // authState: response.data.authState, // Not currently available from our api end points.
-          // refreshToken: response.data.refreshToken, // Only if you are using refreshToken feature
-          // refreshTokenExpireIn: response.data.refreshTokenExpireIn, // Only if you are using refreshToken feature
+          /*
+          authState: response.data.authState, // Not currently available from our api end points.
+          refreshToken: response.data.refreshToken, // Only if you are using refreshToken feature
+          refreshTokenExpireIn: response.data.refreshTokenExpireIn, // Only if you are using refreshToken feature
+          */
         })
       ) {
         navigate('/profile')
