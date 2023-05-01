@@ -1,66 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-
-import Root from './routes/Root'
-import Register from './routes/Register.jsx'
-import Error from './routes/Error.jsx'
-import Login from './routes/Login'
-import CreateProfile from './routes/CreateProfile.jsx'
-import PrivateRoutes from './routes/PrivateRoutes.jsx'
-import Profile from './routes/Profile'
-import App from './routes/App'
-
-const router = createBrowserRouter([
-  {
-    path: '/',
-    element: <Root />,
-    errorElement: <Error />,
-    children: [
-      {
-        path: '/',
-        element: <App />,
-        errorElement: <Error />,
-      },
-      {
-        path: '/register',
-        element: <Register />,
-        errorElement: <Error />,
-      },
-      {
-        path: '/login',
-        element: <Login />,
-        errorElement: <Error />,
-      },
-      {
-        path: '/create-profile',
-        element: <PrivateRoutes />,
-        children: [
-          {
-            path: '/create-profile',
-            element: <CreateProfile />,
-          },
-        ],
-        errorElement: <Error />,
-      },
-      {
-        path: '/profile',
-        element: <PrivateRoutes />,
-        errorElement: <Error />,
-        children: [
-          {
-            path: '/profile',
-            element: <Profile />,
-          },
-        ],
-      },
-    ],
-  },
-])
+import App from './App'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <App />
   </React.StrictMode>
 )
