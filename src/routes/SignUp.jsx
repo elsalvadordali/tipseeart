@@ -16,16 +16,10 @@ const SignUp = () => {
 
   // Redirects authenticated user from login page.
   useEffect(() => {
-    if (isAuthenticated()) {
+    if (isAuthenticated === true && formCompleted === false) {
       return navigate('/')
     }
-  }, [isAuthenticated, navigate])
-  function clearForm() {
-    setUsername('')
-    setEmail('')
-    setPassword('')
-    setPassword2('')
-  }
+  }, [isAuthenticated, navigate, formCompleted])
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -42,14 +36,13 @@ const SignUp = () => {
     }
     submitForm(userRegistration)
     setFormCompleted((prev) => !prev)
-    clearForm()
-    await new Promise((r) => setTimeout(r, 3000))
-    await navigate('/create-profile')
+    await new Promise((resolve) => setTimeout(resolve, 500))
+    navigate('/create-profile')
   }
 
   return (
     <div className='flex flex-col items-center justify-center py-6 relative'>
-      {formCompleted && <SuccessToast />}
+      {formCompleted && <SuccessToast toastType={'register'} />}
       <h1 className='font-extralight text-6xl mb-6'>Register</h1>
       <form className='flex flex-col w-1/2 sm:max-w-xs lg:max-w-md'>
         <label htmlFor='username' className='text-xl font-medium mb-2'>

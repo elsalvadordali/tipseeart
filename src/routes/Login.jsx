@@ -2,19 +2,21 @@ import axios from 'axios'
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useSignIn, useIsAuthenticated } from 'react-auth-kit'
+import SuccessToast from '../components/SuccessToast'
 
 const Login = () => {
   const signIn = useSignIn()
   const navigate = useNavigate()
   const isAuthenticated = useIsAuthenticated()
   const [formData, setFormData] = useState({ username: '', password: '' })
+  const [formCompleted, setFormCompleted] = useState(false)
 
   // Redirects authenticated user from login page.
   useEffect(() => {
-    if (isAuthenticated()) {
+    if (isAuthenticated === true && formCompleted === false) {
       return navigate('/')
     }
-  }, [isAuthenticated, navigate])
+  }, [isAuthenticated, navigate, formCompleted])
 
   async function onSubmit(e) {
     e.preventDefault()
@@ -29,13 +31,15 @@ const Login = () => {
           token: response.data.access_token,
           tokenType: 'bearer',
           expiresIn: 30000, // Needs added to api end points. Hardcoded in the meantime due to being a required value.
+          authState: {}, // Data currently available from our api end points. Set as empty object to prevent logout on refresh.
           /*
-          authState: response.data.authState, // Not currently available from our api end points.
           refreshToken: response.data.refreshToken, // Only if you are using refreshToken feature
           refreshTokenExpireIn: response.data.refreshTokenExpireIn, // Only if you are using refreshToken feature
           */
         })
       ) {
+        setFormCompleted((prev) => !prev)
+        await new Promise((resolve) => setTimeout(resolve, 500))
         navigate('/profile')
       } else {
         console.log(`Error: ${response}`)
@@ -44,7 +48,8 @@ const Login = () => {
   }
 
   return (
-    <div className='flex flex-col items-center'>
+    <div className='flex flex-col items-center justify-center py-6 relative'>
+      {formCompleted && <SuccessToast toastType={'login'} />}
       <h1 className='font-extralight text-6xl mb-12'>Login</h1>
       <form className='flex flex-col w-5/6 lg:w-1/3' onSubmit={onSubmit}>
         <label htmlFor='username' className='mt-4 text-xl font-medium'>
