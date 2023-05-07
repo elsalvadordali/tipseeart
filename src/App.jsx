@@ -5,9 +5,10 @@ import Layout from './routes/Layout'
 import Home from './routes/Home'
 import CreateProfile from './routes/CreateProfile'
 import Profile from './routes/Profile'
-import Login from './routes/login'
+import Login from './routes/Login'
 import SignUp from './routes/SignUp'
-import Error from './routes/error'
+import Error from './routes/Error'
+import NotFound from './routes/NotFound'
 
 const App = () => (
   <AuthProvider
@@ -23,7 +24,7 @@ const App = () => (
           <Route path='/login' element={<Login />} errorElement={<Error />} />
           <Route path='/signup' element={<SignUp />} errorElement={<Error />} />
           <Route
-            path={'/create-a-profile'}
+            path={'/create-profile'}
             element={
               <RequireAuth loginPath={'/login'}>
                 <CreateProfile />
@@ -40,6 +41,7 @@ const App = () => (
             }
             errorElement={<Error />}
           />
+          <Route path={'*'} element={<NotFound />} />
         </Route>
       </Routes>
     </BrowserRouter>
