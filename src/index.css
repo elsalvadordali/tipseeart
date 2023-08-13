@@ -9,3 +9,8 @@
 #profile-pic:hover {
   opacity: 0.5;
 }
+
+
+label svg {
+  scale: .5
+}

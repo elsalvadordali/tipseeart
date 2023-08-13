@@ -1,24 +1,38 @@
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../../firebase';
+
 export async function submitForm(userData) {
-  try {
-    const response = await fetch(`https://tipseeart.fly.dev/user/create`, {
-      method: 'post',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    })
+  createUserWithEmailAndPassword(auth, userData.email, userData.password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+    //console.log("WE GOOD baby", user, localStorage)
+    sessionStorage.setItem('token', user.accessToken)
+    // ...
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+  });
+  // try {
+    
+  // .catch((error) => {
+  //   const errorCode = error.code;
+  //   const errorMessage = error.message;
+  //   // ..
+  // });
+  //   if (!response.ok) {
+  //     const message = `Error: ${response.status}`
+  //     throw new Error(message)
+  //   }
 
-    if (!response.ok) {
-      const message = `Error: ${response.status}`
-      throw new Error(message)
-    }
-
-    const data = await response.json()
-    const token = data.access_token
-    sessionStorage.setItem('token', token)
-  } catch (error) {
-    console.log(`Error: ${error}`)
-  }
+  //   const data = await response.json()
+  //   const token = data.access_token
+  //   sessionStorage.setItem('token', token)
+  // } catch (error) {
+  //   console.log(`Error: ${error}`)
+  // }
 }
 
 export async function confirmToken(token) {

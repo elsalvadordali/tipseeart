@@ -2,17 +2,16 @@ import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { submitForm } from '../util/crudOperations'
 import SuccessToast from '../components/SuccessToast'
-import { useIsAuthenticated } from 'react-auth-kit'
+
 
 const SignUp = () => {
-  const [username, setUsername] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [password2, setPassword2] = useState('')
   const [error, setError] = useState({})
   const [formCompleted, setFormCompleted] = useState(false)
   const navigate = useNavigate()
-  const isAuthenticated = useIsAuthenticated()
+  const isAuthenticated = sessionStorage.getItem('token') ? true : false
 
   // Redirects authenticated user from login page.
   useEffect(() => {
@@ -23,21 +22,21 @@ const SignUp = () => {
 
   async function handleSubmit(e) {
     e.preventDefault()
-    if (username.length < 3) return setError({ username: 'Username must be at least 3 characters' })
     if (email.includes('@') === false || email.includes('.') === false)
       return setError({ email: 'Email must be valid' })
     if (password.length < 8) return setError({ password: 'Password must be at least 8 characters' })
     if (password !== password2) return setError({ password2: 'Passwords do not match' })
 
     const userRegistration = {
-      username,
       email,
       password,
     }
-    submitForm(userRegistration)
+    await submitForm(userRegistration)
     setFormCompleted((prev) => !prev)
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    navigate('/create-profile')
+   //await new Promise((resolve) => setTimeout(resolve, 500))
+    //navigate('/create-profile')
+
+    
   }
 
   return (
@@ -45,19 +44,6 @@ const SignUp = () => {
       {formCompleted && <SuccessToast toastType={'register'} />}
       <h1 className='font-extralight text-6xl mb-6'>Register</h1>
       <form className='flex flex-col w-1/2 sm:max-w-xs lg:max-w-md'>
-        <label htmlFor='username' className='text-xl font-medium mb-2'>
-          Username
-        </label>
-        <input
-          type='text'
-          name='username'
-          id='username'
-          className='border-2 border-gray-200 py-2 px-4 outline-none focus:border-gray-700 rounded-lg'
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <p className='text-red-600'>{error?.username}</p>
-
         <label htmlFor='email' className='mt-4 text-xl font-medium mb-2'>
           Email
         </label>

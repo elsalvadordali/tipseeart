@@ -147,7 +147,7 @@ function Home() {
         <p>{search && artists.length + ' found'}</p>
         <div className='flex flex-row flex-wrap w-full justify-evenly items-start min-h-screen'>
           {artists.length > 0 ? (
-            artists.map((artist, i) => <ArtistBlock artist={artist} isFeatured={i == featured} />)
+            artists.map((artist, i) => <ArtistBlock key={`artist-info-box-${i}`} artist={artist} isFeatured={i == featured} />)
           ) : (
             <p>No artists found! </p>
           )}

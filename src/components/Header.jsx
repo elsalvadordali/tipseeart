@@ -1,7 +1,6 @@
 import cn from 'classnames'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useIsAuthenticated } from 'react-auth-kit'
 
 import NavItem from './NavItem'
 import { MenuToggle } from './Icons'
@@ -23,7 +22,7 @@ const navLinks = [
 ]
 
 const Header = () => {
-  const isAuthenticated = useIsAuthenticated()
+  const isAuthenticated = sessionStorage.getItem('token') ? true : false
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
   /* ↓ Auto Closes Menu when link/button is clicked within ↓ */
@@ -40,7 +39,7 @@ const Header = () => {
       <img src='/tipseeart.svg' className='w-36' alt='tip see art' />
       <nav className='hidden md:flex flex-col justify-between min-h-full max-w-lg w-full'>
         <ul className='flex gap-5 justify-end items-center'>
-          {isAuthenticated() && (
+          {isAuthenticated && (
             <>
               <li>
                 <LogoutComponent />
@@ -55,7 +54,7 @@ const Header = () => {
               </li>
             </>
           )}
-          {!isAuthenticated() && (
+          {!isAuthenticated && (
             <>
               <li>
                 <Link
@@ -105,7 +104,7 @@ const Header = () => {
             ))}
           </ul>
           <ul className='flex justify-center gap-3'>
-            {isAuthenticated() && (
+            {isAuthenticated && (
               <>
                 <li onClick={mobileMenuAutoClose}>
                   <LogoutComponent />
@@ -120,7 +119,7 @@ const Header = () => {
                 </li>
               </>
             )}
-            {!isAuthenticated() && (
+            {!isAuthenticated && (
               <>
                 <li onClick={mobileMenuAutoClose}>
                   <Link

@@ -1,7 +1,9 @@
-import { useSignOut } from 'react-auth-kit'
+
+function signOut() {
+  localStorage.clear()
+}
 
 const LogoutComponent = () => {
-  const signOut = useSignOut()
 
   return (
     <button
