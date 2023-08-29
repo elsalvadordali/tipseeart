@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link, redirect, useNavigate } from "react-router-dom";
 import SuccessToast from "../components/SuccessToast";
@@ -9,6 +8,7 @@ const Login = () => {
   const navigate = useNavigate();
   const isAuthenticated = sessionStorage.getItem('token') ? true : false;
   const [formData, setFormData] = useState({ email: "", password: "" });
+  const [error, setError] = useState({email: '', password: ''})
   const [formCompleted, setFormCompleted] = useState(false);
 
   // Redirects authenticated user from login page.
@@ -30,15 +30,18 @@ const Login = () => {
           localStorage.setItem('uid', user.auth.currentUser.uid)
           redirect('/profile')
         })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
+        .catch((err) => {
+          if (err.code == 'auth/user-not-found') {
+            setError(prev => ({ ...prev, email: 'Please create an account first'}))
+          } else {
+            setError(prev => ({...prev, email: err.code}))
+          }
         });
     } else {
       //TODO USER NEEDS TO FILL IN BOTH FIELDS
     }
   }
-
+  console.log(error)
   return (
     <div className="flex flex-col items-center justify-center py-6 relative">
       {formCompleted && <SuccessToast toastType={"login"} />}
@@ -55,6 +58,7 @@ const Login = () => {
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           value={formData.email}
         />
+        {error.email &&  <p className="red">{error.email}</p>}
         <label htmlFor="password" className="mt-4 text-xl font-medium">
           Password
         </label>
@@ -75,7 +79,7 @@ const Login = () => {
           Login
         </button>
       </form>
-      <Link to={"/register"} className="mt-4 text-xl font-normal underline">
+      <Link to={"/signup"} className="mt-4 text-xl font-normal underline">
         Need an account?
       </Link>
     </div>

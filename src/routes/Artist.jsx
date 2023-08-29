@@ -9,46 +9,24 @@ import {
   VenmoLogo,
 } from "../components/Icons";
 import { useState, useEffect, useRef } from "react";
-import {
-  doc,
-  query,
-  getDoc,
-  setDoc,
-  collection,
-  where,
-} from "firebase/firestore";
+import { collection, query, where, getDocs } from "firebase/firestore";
+
 import { db } from "../../firebase";
 import { Navigate, redirect, useLoaderData } from "react-router-dom";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export async function loader({ request }) {
-  const path = new URL(request.url).pathname;
-  console.log("PARAMS ARE", path);
-  const isAuthenticated = sessionStorage.getItem("token") ? true : false;
-  if (!isAuthenticated) return redirect("/");
+  const username = new URL(request.url).pathname.substring(1);
 
-  if (path == "/profile" || path == "/profile/") {
-    const uid = localStorage.getItem("uid");
-    const docRef = doc(db, "artists", uid);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      return docSnap.data();
-      const storage = getStorage();
-    const pathReference = ref(storage, 'images/stars.jpg');
+  const artistRef = collection(db, "artists");
+  const q = query(artistRef, where("username", "==", username));
+  const querySnapshot = await getDocs(q);
 
-    } else {
-
-      //need to find userID first
-      //const artistsRef = collection(db, "artists");
-      //const profile = query(collection(db, "artists"), where("username", "==", ) )
-    }
-  }
-  return null;
-  //get profile pic??
-  //const pathReference = ref(storage, `${}`)
+  console.log("GOT", querySnapshot.docs[0].data());
+  return querySnapshot.docs[0].data();
 }
 
-const Profile = () => {
+const Artist = () => {
   const profile = useLoaderData();
   console.log("HAH", profile);
   const [profilePic, setProfilePic] = useState(null);
@@ -95,7 +73,9 @@ const Profile = () => {
         <div className="w-80">
           <p>{profile.description}</p>
         </div>
-        {(profile.twitter || profile.instagram || profile.dribble) && <h3 className="text-3xl font-extralight mb-6">Follow</h3>}
+        {(profile.twitter || profile.instagram || profile.dribble) && (
+          <h3 className="text-3xl font-extralight mb-6">Follow</h3>
+        )}
         {profile.twitter && (
           <div className="grid grid-cols-3 gap-2 border-2 w-80 mb-12 p-2 hover:border-indigo-400 transition duration-300 ease-in-out">
             <label className="flex justify-start items-center">
@@ -126,7 +106,7 @@ const Profile = () => {
             </h2>
           </div>
         )}
-         {profile.dribble && (
+        {profile.dribble && (
           <div className="grid grid-cols-3 gap-2 border-2 w-80 mb-12 p-2  outline-none hover:border-indigo-400 transition duration-300 ease-in-out">
             <label className="flex justify-start items-center">
               <Dribble />
@@ -141,8 +121,11 @@ const Profile = () => {
             </h2>
           </div>
         )}
-        {(profile.cashApp || profile.paypal || profile.venmo) && <h3 className="text-3xl font-extralight mb-6">Tip</h3>}
-        {profile.cashApp && <div className="grid grid-cols-3 gap-2 border-2 w-80 mb-12 p-2 hover:border-indigo-400 transition duration-300 ease-in-out">
+        {(profile.cashApp || profile.paypal || profile.venmo) && (
+          <h3 className="text-3xl font-extralight mb-6">Tip</h3>
+        )}
+        {profile.cashApp && (
+          <div className="grid grid-cols-3 gap-2 border-2 w-80 mb-12 p-2 hover:border-indigo-400 transition duration-300 ease-in-out">
             <label className="flex justify-start items-center">
               <CashAppLogo />
             </label>
@@ -154,8 +137,10 @@ const Profile = () => {
                 {profile.cashApp}
               </a>
             </h2>
-          </div>}
-          {profile.paypal && <div className="grid grid-cols-3 gap-2 border-2 w-80 mb-12 p-2 hover:border-indigo-400 transition duration-300 ease-in-out">
+          </div>
+        )}
+        {profile.paypal && (
+          <div className="grid grid-cols-3 gap-2 border-2 w-80 mb-12 p-2 hover:border-indigo-400 transition duration-300 ease-in-out">
             <label className="flex justify-start items-center">
               <PaypalLogo />
             </label>
@@ -167,8 +152,10 @@ const Profile = () => {
                 {profile.paypal}
               </a>
             </h2>
-          </div>}
-          {profile.venmo && <div className="grid grid-cols-3 gap-2 border-2 w-80 mb-12 p-2 hover:border-indigo-400 transition duration-300 ease-in-out">
+          </div>
+        )}
+        {profile.venmo && (
+          <div className="grid grid-cols-3 gap-2 border-2 w-80 mb-12 p-2 hover:border-indigo-400 transition duration-300 ease-in-out">
             <label className="flex justify-start items-center h-12">
               <VenmoLogo />
             </label>
@@ -180,7 +167,8 @@ const Profile = () => {
                 {profile.venmo}
               </a>
             </h2>
-          </div>}
+          </div>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 justify-items-center">
           <h2 className="text-4xl text-extralight">Gallery</h2>
 
@@ -197,4 +185,4 @@ const Profile = () => {
   }
 };
 
-export default Profile;
+export default Artist;

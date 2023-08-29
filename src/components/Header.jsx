@@ -39,6 +39,7 @@ const Header = () => {
       <img src='/tipseeart.svg' className='w-36' alt='tip see art' />
       <nav className='hidden md:flex flex-col justify-between min-h-full max-w-lg w-full'>
         <ul className='flex gap-5 justify-end items-center'>
+          {isAuthenticated ? "TRUE" : 'false'}
           {isAuthenticated && (
             <>
               <li>
@@ -87,7 +88,7 @@ const Header = () => {
       {/* ↓ Mobile Navbar and toggle button ↓ */}
 
       <button
-        className='md:hidden relative z-20 w-14 h-14 bg-black rounded-lg text-white flex justify-center items-center'
+        className='md:hidden relative z-20 w-14 h-14 bg-black text-white flex justify-center items-center'
         onClick={mobileMenuHandler}
       >
         <MenuToggle />

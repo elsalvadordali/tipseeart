@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 
 import { getFirestore } from "firebase/firestore";
 
-console.log(import.meta.env.VITE_API_KEY);
+//console.log(import.meta.env.VITE_API_KEY);
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -12,6 +12,7 @@ const firebaseConfig = {
   storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
   messagingSenderId: import.meta.env.VITE_MESSAGE_SENDER,
   appId: import.meta.env.VITE_APP_ID,
+  storageBucket: 'gs://artist-profiles-934.appspot.com'
 };
 
 // Initialize Firebase

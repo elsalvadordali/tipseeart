@@ -2,19 +2,19 @@ import { createUserWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../../firebase';
 
 export async function submitForm(userData) {
-  createUserWithEmailAndPassword(auth, userData.email, userData.password)
+  let res
+
+  await createUserWithEmailAndPassword(auth, userData.email, userData.password)
   .then((userCredential) => {
-    // Signed in 
     const user = userCredential.user;
-    //console.log("WE GOOD baby", user, localStorage)
     sessionStorage.setItem('token', user.accessToken)
-    // ...
+    res = true
   })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    // ..
+  .catch(() => {
+    res = false
   });
+  console.log("HERE IS", res)
+  return res
   // try {
     
   // .catch((error) => {
@@ -35,7 +35,7 @@ export async function submitForm(userData) {
   // }
 }
 
-export async function confirmToken(token) {
+export async function confirmToken_old(token) {
   try {
     const response = await fetch('https://tipseeart.fly.dev/me', {
       headers: { Authorization: 'Bearer ' + token },
