@@ -12,7 +12,7 @@ import { useState, useEffect, useRef } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
 
 import { db } from "../../firebase";
-import { Navigate, redirect, useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 
 export async function loader({ request }) {
@@ -22,13 +22,11 @@ export async function loader({ request }) {
   const q = query(artistRef, where("username", "==", username));
   const querySnapshot = await getDocs(q);
 
-  console.log("GOT", querySnapshot.docs[0].data());
   return querySnapshot.docs[0].data();
 }
 
 const Artist = () => {
   const profile = useLoaderData();
-  console.log("HAH", profile);
   const [profilePic, setProfilePic] = useState(null);
   const [formData, setFormData] = useState({});
   const [gallery, setGallery] = useState([]);
@@ -39,9 +37,7 @@ const Artist = () => {
 
     if (uid) {
       await setDoc(doc(db, "artists", uid), formData);
-      uploadBytes(storageRef, profile).then((snapshot) => {
-        console.log("Uploaded a blob or file!");
-      });
+      uploadBytes(storageRef, profile)
     }
   }
 
@@ -61,7 +57,6 @@ const Artist = () => {
       getDownloadURL(ref(storage, path));
     });
   }
-  console.log(profile);
   if (profile) {
     return (
       <main className="flex flex-col items-center justify-center w-full pt-8 pb-12">

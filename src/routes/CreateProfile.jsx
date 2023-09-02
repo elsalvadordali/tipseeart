@@ -1,17 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import Dropdown from "../components/Dropdown";
-import Socials from "../components/Socials";
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { uploadBytes, ref, getStorage } from "firebase/storage";
-import { useLoaderData } from "react-router-dom";
-import { prototype } from "postcss/lib/previous-map";
-import ImageResize from "image-resize";
+import { useLoaderData, Navigate } from "react-router-dom";
 
 export async function loader() {
-  const token = sessionStorage.getItem("token");
   const uid = localStorage.getItem("uid");
-  let mock_profile = {
+  const mock_profile = {
     bio: "",
     username: "",
     fullName: "",
@@ -25,64 +20,22 @@ export async function loader() {
     venmo: "",
     gallery: [],
   };
-  //return mock_profile;
-  if (!token) return mock_profile;
-  else {
-    const docRef = doc(db, "artists", uid);
-    await getDoc(docRef)
-      .then((data) => (mock_profile = data.data()))
-      .catch((err) => console.log("eror", err));
-    //if (ref) return ref.data();
-    return mock_profile;
-  }
+
+  const docRef = doc(db, "artists", uid);
+  await getDoc(docRef)
+    .then((data) => (mock_profile = data.data()))
+    .catch(() => mock_profile);
+  //if (ref) return ref.data();
   return mock_profile;
 }
 
-async function submitForm(e, profile, oldProfile) {
-  e.preventDefault();
-  if (profile.username.length == 0) return;
-  const uid = localStorage.getItem("uid");
-  if (!profile.bio) profile.bio = oldProfile.bio;
-  if (!profile.fullName) profile.fullName = oldProfile.fullName;
-  if (!profile.profile_pic_url)
-    profile.profile_pic_url = oldProfile.profile_pic_url;
-  if (!profile.twitter) profile.twitter = oldProfile.twitter;
-  if (!profile.instagram) profile.instagram = oldProfile.instagram;
-  if (!profile.dribble) profile.dribble = oldProfile.dribble;
-  if (!profile.portfolio) profile.portfolio = oldProfile.portfolio;
-  if (!profile.cashapp) profile.cashapp = oldProfile.cashapp;
-  if (!profile.paypal) profile.paypal = oldProfile.paypal;
-  if (!profile.venmo) profile.venmo = oldProfile.venmo;
-  if (!profile.gallery) profile.gallery = oldProfile.gallery;
-
-  if (profile.twitter[0] == "@") profile.twitter = profile.twitter.substring(1);
-  if (profile.instagram[0] == "@")
-    profile.instagram = profile.instagram.substring(1);
-  if (profile.dribble[0] == "@") profile.dribble = profile.dribble.substring(1);
-
-  if (profile.cashapp[0] == "@") profile.cashapp = profile.cashapp.substring(1);
-  if (profile.paypal[0] == "@") profile.paypal = profile.paypal.substring(1);
-  if (profile.venmo[0] == "@") profile.venmo = profile.venmo.substring(1);
-
-  console.log(profile);
-  if (uid) {
-    await setDoc(doc(db, "artists", uid), profile).catch((err) =>
-      console.log(err)
-    );
-    //const storage = getStorage();
-    //const storageRef = ref(storage, `profiles/${uid}${fileExtension}`);
-    //uploadBytes(storageRef, profilePicture).catch((err) => console.log(err));
-  }
-  //console.log("PROFILE", profilePicture)
-}
-
 const CreateProfile = () => {
-  //const token = sessionStorage.getItem("token");
   const oldProfile = useLoaderData();
+  const [formCompleted, setFormCompleted] = useState(false);
   const [profilePicture, setProfilePicture] = useState(null);
   const [profile, setProfile] = useState({
     bio: "",
-    username: "",
+    username: oldProfile.username,
     fullName: "",
     profile_pic_last_modified: null,
     twitter: "",
@@ -95,13 +48,48 @@ const CreateProfile = () => {
     gallery: [],
   });
 
+  async function submitForm(e, profile, oldProfile) {
+    e.preventDefault();
+    if (profile.username.length == 0) return;
+    const uid = localStorage.getItem("uid");
+    if (!profile.bio) profile.bio = oldProfile.bio;
+    if (!profile.fullName) profile.fullName = oldProfile.fullName;
+    if (!profile.profile_pic_url)
+      profile.profile_pic_url = oldProfile.profile_pic_url;
+    if (!profile.twitter) profile.twitter = oldProfile.twitter;
+    if (!profile.instagram) profile.instagram = oldProfile.instagram;
+    if (!profile.dribble) profile.dribble = oldProfile.dribble;
+    if (!profile.portfolio) profile.portfolio = oldProfile.portfolio;
+    if (!profile.cashapp) profile.cashapp = oldProfile.cashapp;
+    if (!profile.paypal) profile.paypal = oldProfile.paypal;
+    if (!profile.venmo) profile.venmo = oldProfile.venmo;
+    if (!profile.gallery) profile.gallery = oldProfile.gallery;
+
+    if (profile.twitter[0] == "@")
+      profile.twitter = profile.twitter.substring(1);
+    if (profile.instagram[0] == "@")
+      profile.instagram = profile.instagram.substring(1);
+    if (profile.dribble[0] == "@")
+      profile.dribble = profile.dribble.substring(1);
+
+    if (profile.cashapp[0] == "@")
+      profile.cashapp = profile.cashapp.substring(1);
+    if (profile.paypal[0] == "@") profile.paypal = profile.paypal.substring(1);
+    if (profile.venmo[0] == "@") profile.venmo = profile.venmo.substring(1);
+
+    if (uid) {
+      await setDoc(doc(db, "artists", uid), profile)
+        .then(() => setFormCompleted(true))
+        .catch((err) => console.log("ERROR: ", err));
+    }
+  }
+
   function resize(file) {
     const img = new Image();
-    img.alt = "HELLO";
+    img.alt = "profile image";
     img.src = URL.createObjectURL(file);
 
     img.onload = function () {
-      console.log(img);
       const canvas = document.getElementById("canvas");
       const scale =
         Math.min(img.width, img.height) == img.width
@@ -115,7 +103,7 @@ const CreateProfile = () => {
       canvas
         .getContext("2d")
         .drawImage(img, position.x, position.y, size.width, size.height);
-      const blob = canvas.toBlob((blob) => {
+      canvas.toBlob((blob) => {
         const storage = getStorage();
         const imgRef = ref(storage, profile.username);
         const blobToFile = new File(
@@ -124,27 +112,21 @@ const CreateProfile = () => {
           { type: "image/png" },
           "image/png"
         );
-        uploadBytes(imgRef, blobToFile).then((snapshot) => {
-          console.log(
-            "Uploaded a blob:",
-            snapshot.metadata.contentType
-          );
-        });
+        uploadBytes(imgRef, blobToFile);
       });
       setProfile((prev) => ({
-          ...prev,
-          profile_pic_last_modified: new Date().valueOf(),
-        }));
+        ...prev,
+        profile_pic_last_modified: new Date().valueOf(),
+      }));
     };
   }
 
-
   useEffect(() => {
-    if (profile.profile_pic_last_modified > new Date().valueOf() - 1000) return
+    if (profile.profile_pic_last_modified > new Date().valueOf() - 1000) return;
     if (profilePicture && profile.username) resize(profilePicture);
   }, [profilePicture, profile.username]);
 
-  profile.username = oldProfile.username;
+  if (formCompleted) return <Navigate to="/auth/profile" replace={true} />;
 
   return (
     <div className="flex items-center justify-center w-full">
@@ -152,7 +134,7 @@ const CreateProfile = () => {
         className="flex flex-col items-start m-6 sm:w-96"
         onSubmit={(e) => submitForm(e, profile, oldProfile)}
       >
-        <h1 className="font-extralight text-6xl mb-12">Create Profile</h1>
+        <h1 className="font-extralight text-6xl mb-12">Edit Profile</h1>
         <h2 className="text-2xl font-extralight mb-2">0. Name</h2>
         <label htmlFor="fullName">Your stage name, as it were</label>
         <input
@@ -200,21 +182,19 @@ const CreateProfile = () => {
         <div
           id="mom"
           className="h-80 w-80 border-2 p-12 relative text-center border-gray-600 mb-12 flex justify-center items-center"
-          style={{
-            backgroundImage: `url(${profile.profile_pic_url})`,
-            backgroundSize: "contain",
-          }}
         >
           <canvas
             id="canvas"
             className="absolute top-0 left-0 z-10"
             width="316"
             height="316"
-            style={{ background: "gray" }}
+            style={{ background: "#D5DBE4" }}
           />
 
           <label htmlFor="profilePicture" className="z-20">
-            {profilePicture ? "" : "click or drag here"}
+            {profile.profile_pic_last_modified
+              ? "click or drag to update"
+              : "click or drag here"}
           </label>
         </div>
         <input
@@ -380,13 +360,11 @@ const CreateProfile = () => {
           <div className="flex flex-col items-center w-full"></div>
         </div>
         <button className="py-4 px-6 bg-[#222222] text-white uppercase tracking-wider font-normal hover:bg-indigo-700 transition duration-300 ease-in-out">
-          upload gallery
+          Save Profile
         </button>
       </form>
     </div>
   );
-
- 
 };
 
 export default CreateProfile;

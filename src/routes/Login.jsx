@@ -1,56 +1,57 @@
-import { useState, useEffect } from "react";
-import { Link, redirect, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link, Navigate } from "react-router-dom";
 import SuccessToast from "../components/SuccessToast";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebase";
 
 const Login = () => {
-  const navigate = useNavigate();
-  const isAuthenticated = sessionStorage.getItem('token') ? true : false;
   const [formData, setFormData] = useState({ email: "", password: "" });
-  const [error, setError] = useState({email: '', password: ''})
-  const [formCompleted, setFormCompleted] = useState(false);
-
-  // Redirects authenticated user from login page.
-  useEffect(() => {
-    if (isAuthenticated === true && formCompleted === false) {
-      return navigate("/");
-    }
-  }, [isAuthenticated, formCompleted]);
+  const [error, setError] = useState({ email: "", password: "" });
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   async function onSubmit(e) {
     e.preventDefault();
-    console.log("logging in", formData.email, formData.password);
     if (formData.email && formData.password) {
       signInWithEmailAndPassword(auth, formData.email, formData.password)
         .then((userCredential) => {
           const user = userCredential.user;
-          console.log(user)
-          sessionStorage.setItem('token', user.accessToken)
-          localStorage.setItem('uid', user.auth.currentUser.uid)
-          redirect('/profile')
+          sessionStorage.setItem("token", user.accessToken);
+          localStorage.setItem("uid", user.auth.currentUser.uid);
+          setIsLoggedIn(true);
         })
         .catch((err) => {
-          if (err.code == 'auth/user-not-found') {
-            setError(prev => ({ ...prev, email: 'Please create an account first'}))
+          if (err.code == "auth/user-not-found") {
+            setError((prev) => ({
+              ...prev,
+              email: "Please create an account first",
+            }));
           } else {
-            setError(prev => ({...prev, email: err.code}))
+            setError((prev) => ({ ...prev, email: err.code }));
           }
         });
     } else {
-      //TODO USER NEEDS TO FILL IN BOTH FIELDS
+      const emailError = formData.email ? "" : "Please enter an email";
+      const passwordError = formData.password ? "" : "Please enter a password";
+      setError((prev) => ({
+        ...prev,
+        email: emailError,
+        password: passwordError,
+      }));
     }
   }
-  console.log(error)
+  if (isLoggedIn) return <Navigate to="/auth/edit-profile" />;
+
+
   return (
     <div className="flex flex-col items-center justify-center py-6 relative">
-      {formCompleted && <SuccessToast toastType={"login"} />}
+      {isLoggedIn && <SuccessToast toastType={"login"} />}
       <h1 className="font-extralight text-6xl mb-12">Login</h1>
       <form className="flex flex-col w-5/6 lg:w-1/3" onSubmit={onSubmit}>
         <label htmlFor="email" className="mt-4 text-xl font-medium">
           Email
         </label>
         <input
+          autoComplete="on"
           type="text"
           name="email"
           id="email"
@@ -58,11 +59,12 @@ const Login = () => {
           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
           value={formData.email}
         />
-        {error.email &&  <p className="red">{error.email}</p>}
+        {error.email && <p className="red">{error.email}</p>}
         <label htmlFor="password" className="mt-4 text-xl font-medium">
           Password
         </label>
         <input
+          autoComplete="on"
           type="password"
           name="password"
           id="password"

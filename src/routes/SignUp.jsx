@@ -14,12 +14,7 @@ const SignUp = () => {
   const navigate = useNavigate()
   const isAuthenticated = sessionStorage.getItem('token') ? true : false
 
-  // Redirects authenticated user from login page.
-  useEffect(() => {
-    if (isAuthenticated === true && formCompleted === false) {
-      return navigate('/')
-    }
-  }, [isAuthenticated, navigate, formCompleted])
+  if (isAuthenticated) return <Navigate to='/auth/edit-profile' />
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -35,8 +30,7 @@ const SignUp = () => {
       password,
     }
     const res = await submitForm(userRegistration)
-    console.log("WHAT IS RES", res)
-    if (res) navigate('/create-profile')
+    if (res) navigate('/auth/create-profile')
   }
 
   return (
