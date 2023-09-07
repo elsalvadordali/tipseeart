@@ -13,6 +13,8 @@ function Home() {
     Math.floor(Math.random() * artists.length)
   );
 
+  console.log("HOME")
+  console.log(import.meta.env.VITE_API_KEY)
   useEffect(() => {
     async function get() {
       const artistRef = collection(db, "artists");
