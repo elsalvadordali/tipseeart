@@ -28,9 +28,7 @@ export async function loader({ request }) {
   const docSnap = await getDoc(docRef);
   if (docSnap.exists()) {
     return docSnap.data();
-    const storage = getStorage();
-    const pathReference = ref(storage, "images/stars.jpg");
-  }
+ }
   return null;
   //get profile pic??
   //const pathReference = ref(storage, `${}`)
