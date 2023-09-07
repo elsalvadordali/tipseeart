@@ -95,7 +95,7 @@ function Home() {
               <p>
                 <Link
                   to="/signup"
-                  className="bg-gray-600 text-white p-4 py-2 mr-4 underline text-xl text-normal uppercase tracking-wider hover:bg-fuchsia-500 transition duration-300"
+                  className="bg-gray-600 text-white p-4 py-2 mr-4 underline text-xl text-normal uppercase tracking-wider hover:bg-pink-600 transition duration-300"
                 >
                   Register here
                 </Link>

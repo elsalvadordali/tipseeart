@@ -2,7 +2,9 @@ export default function About() {
   return (
     <div className="w-100 flex justify-center">
       <div className="w-80 mt-12 mb-8">
-        <h1 className="text-4xl mb-8">Support Local Artists</h1>
+      <h1 className="font-extralight text-6xl mb-12">Contact</h1>
+
+        <h2 className="text-4xl mb-8">Support Local Artists</h2>
         <p className="mb-8">
           You just found TipSee.Art and you’re about to make an impact on a
           local artist and this community! You’ve obviously enjoyed the public

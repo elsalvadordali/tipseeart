@@ -8,12 +8,21 @@ import {
   PaypalLogo,
   VenmoLogo,
 } from "../components/Icons";
-import { useState, useEffect, useRef } from "react";
+import { useState, } from "react";
 import { collection, query, where, getDocs } from "firebase/firestore";
-
 import { db } from "../../firebase";
 import { useLoaderData } from "react-router-dom";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getBlob } from "firebase/storage";
+
+async function getProfileImage(artist) {
+  const storage = getStorage()
+  const pathRef = ref(storage, `${artist.username}`)
+  const imgBlob = await getBlob(pathRef).catch(() => null)
+  //const img = new Image()
+  //img.src = imgBlob ? URL.createObjectURL(imgBlob) : '/user-x.svg'
+  //imgBlob ? setImage(URL.createObjectURL(imgBlob)) : setImage('/user-x.svg')
+  return URL.createObjectURL(imgBlob)
+}
 
 export async function loader({ request }) {
   const username = new URL(request.url).pathname.substring(1);
@@ -21,12 +30,15 @@ export async function loader({ request }) {
   const artistRef = collection(db, "artists");
   const q = query(artistRef, where("username", "==", username));
   const querySnapshot = await getDocs(q);
-
-  return querySnapshot.docs[0].data();
+  const artist = querySnapshot.docs[0].data();
+  const profile = await getProfileImage(artist)
+  console.log(profile)
+  return {...querySnapshot.docs[0].data(), profile_picture: profile};
 }
 
 const Artist = () => {
   const profile = useLoaderData();
+  console.log("WHAT", profile)
   const [profilePic, setProfilePic] = useState(null);
   const [formData, setFormData] = useState({});
   const [gallery, setGallery] = useState([]);
@@ -41,25 +53,12 @@ const Artist = () => {
     }
   }
 
-  async function handleProfilePicture(e) {
-    e.preventDefault();
-    const picture = e.target.files[0];
-    const regex = /\.\w{3,4}$/gm;
-    const fileExtension = picture.name.match(regex)[0];
-    if (!picture) return;
-    const uid = localStorage.getItem("uid");
-    const storage = getStorage();
-    const storageRef = ref(storage, `profiles/${uid}${fileExtension}`);
-    uploadBytes(storageRef, picture).then((snapshot) => {
-      const bucket = snapshot.ref._location.bucket;
-      const path = snapshot.ref._location.path_;
-      const pathReference = ref(storage, path);
-      getDownloadURL(ref(storage, path));
-    });
-  }
+  
   if (profile) {
     return (
       <main className="flex flex-col items-center justify-center w-full pt-8 pb-12">
+        <img className='w-80 object-cover rounded-full mb-6' src={profile.profile_picture} alt={'profile picture for ' + profile.fullName} />
+
         <div className="grid grid-cols-3 gap-2 border-2 w-80 mb-12 p-2 outline-none transition duration-300 ease-in-out">
           <h2 className="text-6xl font-extralight col-span-3">
             {profile.fullName}
@@ -164,17 +163,7 @@ const Artist = () => {
             </h2>
           </div>
         )}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-10 justify-items-center">
-          <h2 className="text-4xl text-extralight">Gallery</h2>
-
-          {profile.gallery?.map((art, index) => {
-            return (
-              <a href={"/" + art.url} key={`artist-${index}`}>
-                <img src={"/" + art.url} alt={art.name} />
-              </a>
-            );
-          })}
-        </div>
+       
       </main>
     );
   }

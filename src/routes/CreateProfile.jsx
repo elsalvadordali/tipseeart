@@ -6,7 +6,7 @@ import { useLoaderData, Navigate } from "react-router-dom";
 
 export async function loader() {
   const uid = localStorage.getItem("uid");
-  const mock_profile = {
+  let mock_profile = {
     bio: "",
     username: "",
     fullName: "",

@@ -37,7 +37,7 @@ const ArtistBlock = ({ artist, isFeatured }) => {
         <h2 className='text-3xl font-extralight'>{artist.username}</h2>
         <Link
           to={`/${artist.username}`}
-          className='text-xl border-2 p-2 px-4 m-4  uppercase tracking-wider hover:bg-fuchsia-500 transition duration-300'
+          className='text-xl border-2 p-2 px-4 m-4  uppercase tracking-wider hover:bg-pink-600 transition duration-300'
         >
           View Profile
         </Link>
@@ -53,8 +53,8 @@ const ArtistBlock = ({ artist, isFeatured }) => {
       </div>
       <h2 className='text-3xl font-extralight'>{artist.username}</h2>
       <Link
-        to={`/artist/${artist.username}`}
-        className='text-xl border-2 p-2 px-4 m-4  uppercase tracking-wider hover:bg-fuchsia-500 transition duration-300'
+        to={`/${artist.username}`}
+        className='text-xl border-2 p-2 px-4 m-4  uppercase tracking-wider hover:bg-pink-600 transition duration-300'
       >
         View Profile
       </Link>
