@@ -82,6 +82,7 @@ const Profile = () => {
               <a
                 href={`https://twitter.com/${profile.twitter}`}
                 className="underline text-indigo-400 pointer"
+                target="_blank"
               >
                 {profile.twitter}
               </a>
@@ -112,6 +113,7 @@ const Profile = () => {
               <a
                 href={`https://dribbble.com/${profile.dribble}`}
                 className="underline text-indigo-400 pointer"
+                target="_blank"
               >
                 {profile.dribble}
               </a>
@@ -130,6 +132,7 @@ const Profile = () => {
               <a
                 href={`https://cash.app/${profile.cashApp}`}
                 className="underline text-indigo-400 pointer"
+                target="_blank"
               >
                 {profile.cashApp}
               </a>
@@ -145,6 +148,7 @@ const Profile = () => {
               <a
                 href={`https://www.paypal.com/paypalme/${profile.paypal}`}
                 className="underline text-indigo-400 pointer"
+                target="_blank"
               >
                 {profile.paypal}
               </a>
@@ -160,6 +164,7 @@ const Profile = () => {
               <a
                 href={`https://venmo.com/${profile.venmo}`}
                 className="underline text-indigo-400 pointer"
+                target="_blank"
               >
                 {profile.venmo}
               </a>
