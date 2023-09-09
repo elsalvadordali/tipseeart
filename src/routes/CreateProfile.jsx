@@ -22,11 +22,11 @@ export async function loader() {
   };
 
   const docRef = doc(db, "artists", uid);
-  await getDoc(docRef)
-    .then((data) => (mock_profile = data.data()))
-    .catch(() => mock_profile);
-  //if (ref) return ref.data();
-  return mock_profile;
+
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    return docSnap.data();
+ } else return mock_profile
 }
 
 const CreateProfile = () => {
@@ -81,6 +81,7 @@ const CreateProfile = () => {
       await setDoc(doc(db, "artists", uid), profile)
         .then(() => setFormCompleted(true))
         .catch((err) => console.log("ERROR: ", err));
+        
     }
   }
 

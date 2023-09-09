@@ -13,8 +13,6 @@ function Home() {
     Math.floor(Math.random() * artists.length)
   );
 
-  console.log("HOME")
-  console.log(import.meta.env.VITE_API_KEY)
   useEffect(() => {
     async function get() {
       const artistRef = collection(db, "artists");
@@ -110,10 +108,8 @@ function Home() {
     );
   }
   function filterArtists() {
-    console.log("SEARCH IS", search.length)
     if (search.length <= 1) return allArtists
     const s = search.toLowerCase().split(' ').join('')
-    console.log("empty", allArtists)
     return allArtists.filter((artist) => {
       const fullName = artist.fullName.split(' ').join('').toLowerCase()
       const username = artist.username.toLowerCase()

@@ -44,8 +44,9 @@ const Profile = () => {
       const pathRef = ref(storage, `${profile.username}`);
       const imgBlob = await getBlob(pathRef);
       const img = new Image();
-      img.src = URL.createObjectURL(imgBlob);
-      setImage(URL.createObjectURL(imgBlob));
+      img.src = imgBlob ? URL.createObjectURL(imgBlob) : '/user-x.svg'
+      console.log("IMG IS", img)
+      return imgBlob ? URL.createObjectURL(imgBlob) : '/user-x.svg'
     }
   }
 
