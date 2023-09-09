@@ -29,19 +29,11 @@ export async function loader({ request }) {
   const querySnapshot = await getDocs(q);
   const artist = querySnapshot.docs[0].data();
   const profile = await getProfileImage(artist)
-  console.log(profile)
   return { ...querySnapshot.docs[0].data(), profile_picture: profile };
 }
 
 const Artist = () => {
   const profile = useLoaderData();
-  console.log("WHAT", profile)
-  const [profilePic, setProfilePic] = useState(null);
-  const [formData, setFormData] = useState({});
-  const [gallery, setGallery] = useState([]);
-
-
-
 
   if (profile) {
     return (

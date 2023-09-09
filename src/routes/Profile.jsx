@@ -13,7 +13,6 @@ import { getStorage, ref, getBlob } from "firebase/storage";
 
 async function getProfileImage(artist) {
   const storage = getStorage()
-  console.log("A", artist)
   const pathRef = ref(storage, `${artist.username}`)
   const imgBlob = await getBlob(pathRef).catch(() => null)
   return imgBlob ? URL.createObjectURL(imgBlob) : ''
@@ -46,11 +45,6 @@ export async function loader() {
  } else return mock_profile
 }
 
-  // const artist = querySnapshot ? querySnapshot.docs[0].data() : null
-  // const profile = await getProfileImage(artist)
-  // console.log(profile)
-  // return { ...querySnapshot.docs[0].data(), profile_picture: profile };
-// }
 
 const Profile = () => {
   const profile = useLoaderData();

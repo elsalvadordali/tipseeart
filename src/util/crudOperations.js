@@ -34,7 +34,6 @@ export async function loginRequest(userData) {
     const data = await response.json()
     const token = data.access_token
     sessionStorage.setItem('token', token)
-    console.log(data)
   } catch (error) {
     console.log(`Error: ${error}`)
   }
