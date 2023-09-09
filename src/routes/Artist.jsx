@@ -18,10 +18,7 @@ async function getProfileImage(artist) {
   const storage = getStorage()
   const pathRef = ref(storage, `${artist.username}`)
   const imgBlob = await getBlob(pathRef).catch(() => null)
-  //const img = new Image()
-  //img.src = imgBlob ? URL.createObjectURL(imgBlob) : '/user-x.svg'
-  //imgBlob ? setImage(URL.createObjectURL(imgBlob)) : setImage('/user-x.svg')
-  return URL.createObjectURL(imgBlob)
+  return imgBlob ? URL.createObjectURL(imgBlob) : ''
 }
 
 export async function loader({ request }) {
@@ -33,7 +30,7 @@ export async function loader({ request }) {
   const artist = querySnapshot.docs[0].data();
   const profile = await getProfileImage(artist)
   console.log(profile)
-  return {...querySnapshot.docs[0].data(), profile_picture: profile};
+  return { ...querySnapshot.docs[0].data(), profile_picture: profile };
 }
 
 const Artist = () => {
@@ -43,21 +40,13 @@ const Artist = () => {
   const [formData, setFormData] = useState({});
   const [gallery, setGallery] = useState([]);
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    const uid = localStorage.getItem("uid");
 
-    if (uid) {
-      await setDoc(doc(db, "artists", uid), formData);
-      uploadBytes(storageRef, profile)
-    }
-  }
 
-  
+
   if (profile) {
     return (
       <main className="flex flex-col items-center justify-center w-full pt-8 pb-12">
-        <img className='w-80 object-cover rounded-full mb-6' src={profile.profile_picture} alt={'profile picture for ' + profile.fullName} />
+        {profile.profile_picture && <img className='w-80 object-cover rounded-full mb-6' src={profile.profile_picture} alt={'profile picture for ' + profile.fullName} />}
 
         <div className="grid grid-cols-3 gap-2 border-2 w-80 mb-12 p-2 outline-none transition duration-300 ease-in-out">
           <h2 className="text-6xl font-extralight col-span-3">
@@ -79,6 +68,7 @@ const Artist = () => {
               <a
                 href={`https://twitter.com/${profile.twitter}`}
                 className="underline text-indigo-400 pointer"
+                target="_blank"
               >
                 {profile.twitter}
               </a>
@@ -94,6 +84,7 @@ const Artist = () => {
               <a
                 href={`https://instagram.com/${profile.instagram}`}
                 className="underline text-indigo-400 pointer"
+                target="_blank"
               >
                 {profile.instagram}
               </a>
@@ -109,6 +100,8 @@ const Artist = () => {
               <a
                 href={`https://instagram.com/${profile.dribble}`}
                 className="underline text-indigo-400 pointer"
+                target="_blank"
+
               >
                 {profile.dribble}
               </a>
@@ -127,6 +120,7 @@ const Artist = () => {
               <a
                 href={`https://cash.app/${profile.cashApp}`}
                 className="underline text-indigo-400 pointer"
+                target="_blank"
               >
                 {profile.cashApp}
               </a>
@@ -142,6 +136,7 @@ const Artist = () => {
               <a
                 href={`https://www.paypal.com/paypalme/${profile.paypal}`}
                 className="underline text-indigo-400 pointer"
+                target="_blank"
               >
                 {profile.paypal}
               </a>
@@ -157,13 +152,14 @@ const Artist = () => {
               <a
                 href={`https://venmo.com/${profile.venmo}`}
                 className="underline text-indigo-400 pointer"
+                target="_blank"
               >
                 {profile.venmo}
               </a>
             </h2>
           </div>
         )}
-       
+
       </main>
     );
   }
