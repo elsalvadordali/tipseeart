@@ -150,8 +150,8 @@ const CreateProfile = () => {
           }
           placeholder={oldProfile.fullName}
         />
-        <h2 className="text-2xl font-extralight mb-2">1. Username</h2>
-        <label htmlFor="username">Used for display</label>
+        <h2 className="text-2xl font-extralight mb-2">1. Display Name</h2>
+        <label htmlFor="username">No spaces or special characters</label>
         <input
           className={`${
             oldProfile.username.length == 0 && profile.username.length == 0
